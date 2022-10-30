@@ -34,6 +34,7 @@ public abstract class GenericCrudService<EntityName, typePk> extends Validation<
     public void initServiceAndEntity(EntityName entityName) {
         this.entity = entityName.getClass();
         ServiceName serviceName = entity.getAnnotation(ServiceName.class);
+
         if (this.entity.isAnnotationPresent(ServiceName.class)) {
             System.out.println(serviceName.getClass());
             try {

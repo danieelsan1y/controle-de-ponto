@@ -1,6 +1,7 @@
 package com.controledeponto.application.validations;
 
 import com.controledeponto.application.anonation.NotEmpty;
+import com.controledeponto.application.exceptions.service.ServiceException;
 
 import java.lang.reflect.Field;
 
@@ -15,10 +16,10 @@ public class Validation<Entity> {
                 try {
                     attr.setAccessible(true);
                     if (attr.get(entity).toString().isEmpty()) {
-                        System.out.println("Campo Vazio");
+                        new ServiceException("Campo(s) em branco!");
                     }
                 } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
+                    throw new ServiceException("Ocorreu um erro inesperado");
                 }
             }
         }
