@@ -1,6 +1,6 @@
-package com.controledeponto.model;
+package com.controledeponto.application.model;
 
-import com.controledeponto.enums.TypeRecord;
+import com.controledeponto.application.enums.TypeRecord;
 import lombok.Getter;
 import lombok.Setter;
 

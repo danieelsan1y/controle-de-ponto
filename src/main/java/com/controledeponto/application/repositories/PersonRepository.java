@@ -1,6 +1,6 @@
-package com.controledeponto.repositories;
+package com.controledeponto.application.repositories;
 
-import com.controledeponto.model.Person;
+import com.controledeponto.application.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,13 +1,11 @@
-package com.controledeponto.model;
+package com.controledeponto.application.model;
 
-import com.controledeponto.anonation.ServiceName;
-import com.controledeponto.enums.AcessPerson;
-import com.controledeponto.enums.StatusPerson;
-import com.controledeponto.service.PersonService;
-import com.controledeponto.validations.Validation;
+import com.controledeponto.application.anonation.NotEmpty;
+import com.controledeponto.application.anonation.ServiceName;
+import com.controledeponto.application.enums.AcessPerson;
+import com.controledeponto.application.enums.StatusPerson;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
@@ -23,15 +21,19 @@ public class Person {
     @Column(name = "id_pessoa", nullable = false)
     private Long id;
 
+    @NotEmpty
     @Column(name = "login_pessoa", nullable = false)
     private String login;
 
+    @NotEmpty
     @Column(name = "nome_pessoa", nullable = false)
     private String name;
 
+    @NotEmpty
     @Column(name = "sobrenome_pessoa", nullable = false)
     private String lastname;
 
+    @NotEmpty
     @Column(name = "senha_pessoa", nullable = false)
     private String password;
 

@@ -1,13 +1,13 @@
-package com.controledeponto.service;
+package com.controledeponto.application.service;
 
 
-import com.controledeponto.anonation.ServiceName;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.controledeponto.application.anonation.ServiceName;
+import com.controledeponto.application.validations.Validation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public abstract class GenericCrudService<EntityName, typePk> {
+public abstract class GenericCrudService<EntityName, typePk> extends Validation<EntityName> {
 
     Class<?> entity;
 
@@ -18,6 +18,7 @@ public abstract class GenericCrudService<EntityName, typePk> {
     public abstract void initInsert(EntityName entityName);
 
     public EntityName insert(EntityName entityName) {
+        this.verifyNullFiled(entityName);
         this.initInsert(entityName);
         return getRepository().save(entityName);
     }

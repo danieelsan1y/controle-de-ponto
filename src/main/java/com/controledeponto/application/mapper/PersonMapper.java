@@ -1,7 +1,7 @@
-package com.controledeponto.mapper;
+package com.controledeponto.application.mapper;
 
-import com.controledeponto.dto.PersonDTO;
-import com.controledeponto.model.Person;
+import com.controledeponto.application.dto.PersonDTO;
+import com.controledeponto.application.model.Person;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

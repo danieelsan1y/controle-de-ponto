@@ -1,11 +1,11 @@
-package com.controledeponto.enums;
+package com.controledeponto.application.enums;
 
-public enum AcessPerson {
-    DENTIST(0),
-    EMPLOYEE(1);
+public enum TypeRecord {
+    ENTRY(0),
+    EXIT(1);
 
     private int code;
-    private AcessPerson(int code) {
+    private TypeRecord(int code) {
         this.code = code;
     }
 
@@ -13,8 +13,8 @@ public enum AcessPerson {
         return code;
     }
 
-    public static AcessPerson valueOf(int code) {
-        for (AcessPerson value : AcessPerson.values()) {
+    public static TypeRecord valueOf(int code) {
+        for (TypeRecord value : TypeRecord.values()) {
             if (value.getCode() == code) {
                 return value;
             }

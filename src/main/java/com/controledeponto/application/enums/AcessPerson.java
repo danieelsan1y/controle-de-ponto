@@ -1,11 +1,11 @@
-package com.controledeponto.enums;
+package com.controledeponto.application.enums;
 
-public enum StatusPerson {
-    ACTIVE(0),
-    INACTIVE(1);
+public enum AcessPerson {
+    DENTIST(0),
+    EMPLOYEE(1);
 
     private int code;
-    private StatusPerson(int code) {
+    private AcessPerson(int code) {
         this.code = code;
     }
 
@@ -13,8 +13,8 @@ public enum StatusPerson {
         return code;
     }
 
-    public static StatusPerson valueOf(int code) {
-        for (StatusPerson value : StatusPerson.values()) {
+    public static AcessPerson valueOf(int code) {
+        for (AcessPerson value : AcessPerson.values()) {
             if (value.getCode() == code) {
                 return value;
             }

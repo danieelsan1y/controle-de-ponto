@@ -1,10 +1,9 @@
-package com.controledeponto.controller;
+package com.controledeponto.application.controller;
 
-import com.controledeponto.dto.PersonDTO;
-import com.controledeponto.mapper.PersonMapper;
-import com.controledeponto.model.Person;
-import com.controledeponto.service.PersonService;
-import com.controledeponto.validations.Validation;
+import com.controledeponto.application.model.Person;
+import com.controledeponto.application.dto.PersonDTO;
+import com.controledeponto.application.mapper.PersonMapper;
+import com.controledeponto.application.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ public class PersonController {
 
     @PostMapping
     public ResponseEntity<PersonDTO> insert(@RequestBody PersonDTO personDTO) {
-        Validation.verifyNullFiled(personDTO);
         Person person = personMapper.personDTOToPerson(personDTO);
         personService.insert(person);
         personDTO = personMapper.toPersonDTO(person);
