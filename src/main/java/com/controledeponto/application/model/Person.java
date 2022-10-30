@@ -1,7 +1,7 @@
 package com.controledeponto.application.model;
 
 import com.controledeponto.application.anonation.NotEmpty;
-import com.controledeponto.application.anonation.ServiceName;
+import com.controledeponto.application.anonation.NotUpperCase;
 import com.controledeponto.application.enums.AcessPerson;
 import com.controledeponto.application.enums.StatusPerson;
 import lombok.Getter;
@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "tb_cliente")
-@ServiceName(name = "PersonService")
 public class Person {
 
     @Id
@@ -22,6 +21,7 @@ public class Person {
     private Long id;
 
     @NotEmpty
+    @NotUpperCase
     @Column(name = "login_pessoa", nullable = false)
     private String login;
 
@@ -34,6 +34,7 @@ public class Person {
     private String lastname;
 
     @NotEmpty
+    @NotUpperCase
     @Column(name = "senha_pessoa", nullable = false)
     private String password;
 

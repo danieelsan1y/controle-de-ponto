@@ -1,24 +1,27 @@
 package com.controledeponto.application.service;
 
 
-import com.controledeponto.application.anonation.ServiceName;
+import com.controledeponto.application.anonation.NotUpperCase;
+import com.controledeponto.application.exceptions.service.ServiceException;
 import com.controledeponto.application.validations.Validation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
-public abstract class GenericCrudService<EntityName, typePk> extends Validation<EntityName> {
+public abstract class GenericCrudService<EntityName, TypePk> extends Validation<EntityName> {
 
-    Class<?> entity;
 
-    Class<?> service;
-
-    public abstract JpaRepository<EntityName, typePk> getRepository();
+    public abstract JpaRepository<EntityName, TypePk> getRepository();
 
     public abstract void initInsert(EntityName entityName);
 
     public EntityName insert(EntityName entityName) {
         this.verifyNullFiled(entityName);
+        this.verifyUniqueElement(entityName);
+        this.toUppercase(entityName);
         this.initInsert(entityName);
         return getRepository().save(entityName);
     }
@@ -27,22 +30,11 @@ public abstract class GenericCrudService<EntityName, typePk> extends Validation<
         return getRepository().findAll();
     }
 
-    public EntityName findbyId(typePk id) {
+    public EntityName findbyId(TypePk id) {
         return getRepository().findById(id).get();
     }
 
-    public void initServiceAndEntity(EntityName entityName) {
-        this.entity = entityName.getClass();
-        ServiceName serviceName = entity.getAnnotation(ServiceName.class);
+    public abstract void verifyUniqueElement (EntityName entityName);
 
-        if (this.entity.isAnnotationPresent(ServiceName.class)) {
-            System.out.println(serviceName.getClass());
-            try {
-                service= Class.forName(serviceName.name());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
 }
