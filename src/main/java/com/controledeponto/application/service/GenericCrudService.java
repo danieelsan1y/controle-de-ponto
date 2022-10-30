@@ -1,14 +1,7 @@
 package com.controledeponto.application.service;
-
-
-import com.controledeponto.application.anonation.NotUpperCase;
-import com.controledeponto.application.exceptions.service.ServiceException;
 import com.controledeponto.application.validations.Validation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 
 public abstract class GenericCrudService<EntityName, TypePk> extends Validation<EntityName> {
