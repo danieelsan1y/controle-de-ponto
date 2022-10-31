@@ -3,6 +3,7 @@ package com.controledeponto.application.validations;
 import com.controledeponto.application.anonation.NotEmpty;
 import com.controledeponto.application.anonation.NotUpperCase;
 import com.controledeponto.application.exceptions.service.ServiceException;
+import com.controledeponto.application.message.Messages;
 import net.bytebuddy.implementation.bind.annotation.Empty;
 
 import java.lang.annotation.Annotation;
@@ -20,10 +21,10 @@ public class Validation<Entity> {
                 try {
                     attr.setAccessible(true);
                     if (attr.get(entity).toString().isEmpty()) {
-                        throw new ServiceException("Campo(s) obrigatórios em branco!");
+                        throw new ServiceException(Messages.REQUIRED_FIELDS.getDescricao());
                     }
                 } catch (IllegalAccessException e) {
-                    throw new ServiceException("Ocorreu um erro inesperado");
+                    throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescricao());
                 }
             }
         }
@@ -42,7 +43,7 @@ public class Validation<Entity> {
                     }
                 }
             } catch (IllegalAccessException e) {
-                throw new ServiceException("Ocorreu um erro inesperado");
+                throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescricao());
             }
         });
     }

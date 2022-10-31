@@ -1,6 +1,7 @@
 package com.controledeponto.application.service;
 
 import com.controledeponto.application.exceptions.service.ServiceException;
+import com.controledeponto.application.message.Messages;
 import com.controledeponto.application.validations.Validation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -34,6 +35,7 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
     }
 
     public void update(TypePk typePk, EntityName newEntity) {
+        this.verifyNullFiled(newEntity);
         final EntityName oldEntity = getRepository().findById(typePk)
                 .map(it -> {
                     if (it != null) {
@@ -49,14 +51,12 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
                                                         try {
                                                             oldField.setAccessible(true);
                                                             newField.setAccessible(true);
-                                                            System.out.println("Old Field: "+oldField.get(it) +
-                                                                    "  ---> New Field: " + newField.get(newEntity));
                                                             if(newField.get(newEntity) != null) {
                                                                 oldField.set(it,newField.get(newEntity));
                                                             }
 
                                                         } catch (IllegalAccessException e) {
-                                                            throw new RuntimeException(e);
+                                                            throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescricao());
                                                         }
                                                     }
                                                 }
