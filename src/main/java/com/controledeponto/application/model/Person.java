@@ -4,12 +4,16 @@ import com.controledeponto.application.anonation.NotEmpty;
 import com.controledeponto.application.anonation.NotUpperCase;
 import com.controledeponto.application.enums.AcessPerson;
 import com.controledeponto.application.enums.StatusPerson;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Entity
 @Table(name = "tb_cliente")
@@ -23,15 +27,15 @@ public class Person {
     @NotEmpty
     @NotUpperCase
     @Column(name = "login_pessoa", nullable = false)
-    private String login;
+    public String login;
 
     @NotEmpty
     @Column(name = "nome_pessoa", nullable = false)
-    private String name;
+    public String name;
 
     @NotEmpty
     @Column(name = "sobrenome_pessoa", nullable = false)
-    private String lastname;
+    public String lastname;
 
     @NotEmpty
     @NotUpperCase

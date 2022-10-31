@@ -40,6 +40,12 @@ public class PersonController {
         return ResponseEntity.ok().body(personMapper.toPersonDTO(personService.findbyId(id)));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update (@PathVariable Long id, @RequestBody PersonDTO personDTO) {
+        personService.update(id, personMapper.personDTOToPerson(personDTO));
+        return  ResponseEntity.ok().build();
+    }
+
 
 
 }

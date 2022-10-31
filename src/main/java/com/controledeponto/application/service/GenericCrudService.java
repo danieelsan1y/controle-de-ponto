@@ -1,8 +1,14 @@
 package com.controledeponto.application.service;
+
+import com.controledeponto.application.exceptions.service.ServiceException;
 import com.controledeponto.application.validations.Validation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.persistence.Id;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class GenericCrudService<EntityName, TypePk> extends Validation<EntityName> {
 
@@ -27,7 +33,48 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
         return getRepository().findById(id).get();
     }
 
-    public abstract void verifyUniqueElement (EntityName entityName);
+    public void update(TypePk typePk, EntityName newEntity) {
+        final EntityName oldEntity = getRepository().findById(typePk)
+                .map(it -> {
+                    if (it != null) {
+                        Field[] oldEntityAtributes = getAtributes(it);
+                        Field[] newEntityAtributes = getAtributes(newEntity);
+
+                        Arrays.stream(oldEntityAtributes)
+                                .forEach(oldField -> {
+                                    Arrays.stream(newEntityAtributes)
+                                            .forEach(newField -> {
+                                                if (!oldField.isAnnotationPresent(Id.class) && !newField.isAnnotationPresent(Id.class)) {
+                                                    if (oldField.equals(newField)) {
+                                                        try {
+                                                            oldField.setAccessible(true);
+                                                            newField.setAccessible(true);
+                                                            System.out.println("Old Field: "+oldField.get(it) +
+                                                                    "  ---> New Field: " + newField.get(newEntity));
+                                                            if(newField.get(newEntity) != null) {
+                                                                oldField.set(it,newField.get(newEntity));
+                                                            }
+
+                                                        } catch (IllegalAccessException e) {
+                                                            throw new RuntimeException(e);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                });
+
+                        return it;
+                    }
+
+                    return null;
+                })
+                .orElseThrow(() -> new ServiceException("Elemento pesquisado não existe"));
+        this.toUppercase(oldEntity);
+        getRepository().save(oldEntity);
+    }
+
+
+    public abstract void verifyUniqueElement(EntityName entityName);
 
 
 }
