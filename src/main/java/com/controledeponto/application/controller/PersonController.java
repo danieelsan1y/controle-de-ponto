@@ -27,25 +27,52 @@ public class PersonController {
         Person person = personMapper.personDTOToPerson(personDTO);
         personService.insert(person);
         personDTO = personMapper.toPersonDTO(person);
-       return  ResponseEntity.status(HttpStatus.CREATED).body(personDTO);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(personDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<PersonDTO>> findAll() {
-       return ResponseEntity.ok().body(personMapper.toPersonDTOList(personService.findAll()));
+        return ResponseEntity.ok()
+                .body(personMapper.toPersonDTOList(personService.findAll()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PersonDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(personMapper.toPersonDTO(personService.findbyId(id)));
+        return ResponseEntity
+                .ok()
+                .body(personMapper
+                        .toPersonDTO(personService.findbyId(id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update (@PathVariable Long id, @RequestBody PersonDTO personDTO) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
         personService.update(id, personMapper.personDTOToPerson(personDTO));
-        return  ResponseEntity.ok().build();
+        return ResponseEntity
+                .ok()
+                .build();
     }
 
+    @GetMapping("/login/{login}")
+    public ResponseEntity<PersonDTO> findByLogin(@PathVariable String login) {
+        return ResponseEntity
+                .ok()
+                .body(personMapper.toPersonDTO(personService.findByLogin(login)));
+    }
 
-
+    @PutMapping("/status/inactivate/{id}")
+    public ResponseEntity<Void> inactivatePerson(@PathVariable Long id) {
+        personService.inactivatePerson(id);
+        return ResponseEntity
+                .ok()
+                .build();
+    }
+    @PutMapping("/status/activate/{id}")
+    public ResponseEntity<Void> activatedPerson(@PathVariable Long id) {
+        personService.activatePerson(id);
+        return ResponseEntity
+                .ok()
+                .build();
+    }
 }

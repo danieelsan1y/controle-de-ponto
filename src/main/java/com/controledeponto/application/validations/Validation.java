@@ -1,15 +1,12 @@
 package com.controledeponto.application.validations;
 
-import com.controledeponto.application.anonation.NotEmpty;
 import com.controledeponto.application.anonation.NotUpperCase;
+import com.controledeponto.application.anonation.ValidationFields;
 import com.controledeponto.application.exceptions.service.ServiceException;
 import com.controledeponto.application.message.Messages;
-import net.bytebuddy.implementation.bind.annotation.Empty;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.List;
 
 public class Validation<Entity> {
 
@@ -17,14 +14,17 @@ public class Validation<Entity> {
         Field[] atributes = this.getAtributes(entity);
 
         for (Field attr : atributes) {
-            if (attr.isAnnotationPresent(NotEmpty.class)) {
+            if (attr.isAnnotationPresent(ValidationFields.class)) {
                 try {
+                    ValidationFields anotation = attr.getAnnotation(ValidationFields.class);
                     attr.setAccessible(true);
-                    if (attr.get(entity).toString().isEmpty()) {
-                        throw new ServiceException(Messages.REQUIRED_FIELDS.getDescricao());
+                    if(anotation.notEmpty()) {
+                        if (attr.get(entity).toString().isEmpty()) {
+                            throw new ServiceException(Messages.REQUIRED_FIELDS.getDescription());
+                        }
                     }
                 } catch (IllegalAccessException e) {
-                    throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescricao());
+                    throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescription());
                 }
             }
         }
@@ -32,7 +32,9 @@ public class Validation<Entity> {
 
 
     public void toUppercase(Entity entity) {
+        Class <?> clas = getClass(entity);
         Field[] atributes = this.getAtributes(entity);
+
         Arrays.stream(atributes).forEach(field -> {
 
             try {
@@ -43,14 +45,18 @@ public class Validation<Entity> {
                     }
                 }
             } catch (IllegalAccessException e) {
-                throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescricao());
+                throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescription());
             }
         });
     }
 
+
     public Field[] getAtributes(Entity entity) {
-        Class<?> clas = entity.getClass();
+        Class<?> clas = getClass(entity);
         Field[] atributes = clas.getDeclaredFields();
         return atributes;
+    }
+    public Class<?> getClass (Entity entity) {
+        return entity.getClass();
     }
 }

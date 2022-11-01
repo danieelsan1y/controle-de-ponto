@@ -23,6 +23,7 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
         this.verifyUniqueElement(entityName);
         this.toUppercase(entityName);
         this.initInsert(entityName);
+        this.validateEnums(entityName);
         return getRepository().save(entityName);
     }
 
@@ -30,12 +31,15 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
         return getRepository().findAll();
     }
 
-    public EntityName findbyId(TypePk id) {
-        return getRepository().findById(id).get();
+    public EntityName findbyId(TypePk typePk) {
+        return Optional.ofNullable(getRepository().findById(typePk))
+                .flatMap(it -> it)
+                .orElseThrow(() -> new ServiceException(Messages.UNREGISTERED_PERSON.getDescription()));
     }
 
     public void update(TypePk typePk, EntityName newEntity) {
         this.verifyNullFiled(newEntity);
+        this.validateEnums(newEntity);
         final EntityName oldEntity = getRepository().findById(typePk)
                 .map(it -> {
                     if (it != null) {
@@ -56,7 +60,7 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
                                                             }
 
                                                         } catch (IllegalAccessException e) {
-                                                            throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescricao());
+                                                            throw new ServiceException(Messages.UNEXPECTED_ERROR.getDescription());
                                                         }
                                                     }
                                                 }
@@ -73,8 +77,9 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
         getRepository().save(oldEntity);
     }
 
-
     public abstract void verifyUniqueElement(EntityName entityName);
+
+    public abstract void validateEnums (EntityName entityName);
 
 
 }

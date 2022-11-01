@@ -8,8 +8,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target(FIELD)
-public @interface NotEmpty {
+public @interface ValidationFields {
 
+    boolean notEmpty() default false;
 
 
 }

@@ -1,6 +1,6 @@
 package com.controledeponto.application.model;
 
-import com.controledeponto.application.anonation.NotEmpty;
+import com.controledeponto.application.anonation.ValidationFields;
 import com.controledeponto.application.anonation.NotUpperCase;
 import com.controledeponto.application.enums.AcessPerson;
 import com.controledeponto.application.enums.StatusPerson;
@@ -24,27 +24,29 @@ public class Person {
     @Column(name = "id_pessoa", nullable = false)
     private Long id;
 
-    @NotEmpty
+    @ValidationFields(notEmpty = true)
     @NotUpperCase
     @Column(name = "login_pessoa", nullable = false)
     public String login;
 
-    @NotEmpty
+    @ValidationFields(notEmpty = true)
     @Column(name = "nome_pessoa", nullable = false)
     public String name;
 
-    @NotEmpty
+    @ValidationFields(notEmpty = true)
     @Column(name = "sobrenome_pessoa", nullable = false)
     public String lastname;
 
-    @NotEmpty
+    @ValidationFields(notEmpty = true)
     @NotUpperCase
     @Column(name = "senha_pessoa", nullable = false)
     private String password;
 
+    @ValidationFields(validEnum = true)
     @Column(name = "acesso_pessoa", nullable = false)
     private AcessPerson acess;
 
+    @ValidationFields(validEnum = true)
     @Column(name = "status_pessoa", nullable = false)
     private StatusPerson status;
 }
