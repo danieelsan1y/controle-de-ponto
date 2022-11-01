@@ -42,11 +42,9 @@ public class Person {
     @Column(name = "senha_pessoa", nullable = false)
     private String password;
 
-    @ValidationFields(validEnum = true)
     @Column(name = "acesso_pessoa", nullable = false)
     private AcessPerson acess;
 
-    @ValidationFields(validEnum = true)
     @Column(name = "status_pessoa", nullable = false)
     private StatusPerson status;
 }

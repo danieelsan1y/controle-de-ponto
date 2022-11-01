@@ -1,0 +1,15 @@
+Planejamento
+
+1ª Sprint -> 
+	Esperado:
+		Modelagem do banco, criar o projeto do backend e o front
+		
+
+	Feito:
+		Modelagem do banco, criar o projeto do backend
+		Adiantamento no crud de Person
+		Adiantamento da reflexão usando um Crud generico
+		
+
+	Atrasado:
+		Crianção do projeto no front			

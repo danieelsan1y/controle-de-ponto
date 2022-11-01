@@ -22,7 +22,6 @@ public class TestConfig implements CommandLineRunner {
 
         personRepository.save(new Person(null,"danieelsan1","Daniel","Santana","1234", AcessPerson.DENTIST, StatusPerson.ACTIVE));
 
-
     }
 
 }

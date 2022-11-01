@@ -15,7 +15,7 @@ public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_registro", nullable = false)
-    private Integer id;
+    private Long id;
     @Column(name = "tipo_registro", nullable = false)
     private TypeRecord type;
     @Column(name = "instante_registro", nullable = false)

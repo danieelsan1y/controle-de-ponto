@@ -2,6 +2,7 @@ package com.controledeponto.application.enums;
 
 public enum AcessPerson {
     DENTIST(0),
+
     EMPLOYEE(1);
 
     private int code;
