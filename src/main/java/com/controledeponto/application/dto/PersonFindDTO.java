@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PersonDTO {
+public class PersonFindDTO {
 
     private Long id;
 
@@ -15,9 +15,7 @@ public class PersonDTO {
 
     private String lastname;
 
-    private String password;
-
-    private String acess;
+    private String access;
 
     private String status;
 }

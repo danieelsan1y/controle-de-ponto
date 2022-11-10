@@ -43,7 +43,7 @@ public class Person {
     private String password;
 
     @Column(name = "acesso_pessoa", nullable = false)
-    private AcessPerson acess;
+    private AcessPerson access;
 
     @Column(name = "status_pessoa", nullable = false)
     private StatusPerson status;

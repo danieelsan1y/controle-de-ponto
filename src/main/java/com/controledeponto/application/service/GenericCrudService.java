@@ -55,8 +55,8 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
                                                         try {
                                                             oldField.setAccessible(true);
                                                             newField.setAccessible(true);
-                                                            if(newField.get(newEntity) != null) {
-                                                                oldField.set(it,newField.get(newEntity));
+                                                            if (newField.get(newEntity) != null) {
+                                                                oldField.set(it, newField.get(newEntity));
                                                             }
 
                                                         } catch (IllegalAccessException e) {
@@ -79,7 +79,7 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
 
     public abstract void verifyUniqueElement(EntityName entityName);
 
-    public abstract void validateEnums (EntityName entityName);
+    public abstract void validateEnums(EntityName entityName);
 
 
 }

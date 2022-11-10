@@ -1,6 +1,5 @@
 package com.controledeponto.application.service;
 
-import com.controledeponto.application.enums.AcessPerson;
 import com.controledeponto.application.enums.StatusPerson;
 import com.controledeponto.application.exceptions.service.ServiceException;
 import com.controledeponto.application.message.Messages;
@@ -71,7 +70,7 @@ public class PersonService extends GenericCrudService<Person, Long> {
         if (person.getStatus() == null) {
             throw new ServiceException(Messages.INVALID_STATUS.getDescription());
         }
-        if (person.getAcess() == null) {
+        if (person.getAccess() == null) {
             throw new ServiceException(Messages.INVALID_ACESS.getDescription());
         }
     }
