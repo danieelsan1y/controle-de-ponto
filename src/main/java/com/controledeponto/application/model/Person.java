@@ -1,6 +1,5 @@
 package com.controledeponto.application.model;
 
-import com.controledeponto.application.anonation.Ignore;
 import com.controledeponto.application.anonation.ValidationFields;
 import com.controledeponto.application.anonation.NotUpperCase;
 import com.controledeponto.application.enums.AcessPerson;
@@ -41,7 +40,6 @@ public class Person {
 
     @ValidationFields(notEmpty = true)
     @NotUpperCase
-    @JsonIgnore
     @Column(name = "senha_pessoa", nullable = false)
     private String password;
 

@@ -12,4 +12,20 @@ Planejamento
 		
 
 	Atrasado:
-		Crianção do projeto no front			
+		Crianção do projeto no front
+
+
+
+
+2ª Sprint -> 
+	Esperado:
+		CRUD de person
+		
+
+	Feito:
+		CRUD de person back e front
+		Adiantamento do registro de entrada e saida
+		
+
+	Atrasado:
+		-				

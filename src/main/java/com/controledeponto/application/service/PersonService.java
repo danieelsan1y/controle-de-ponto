@@ -41,7 +41,7 @@ public class PersonService extends GenericCrudService<Person, Long> {
         }
         super.update(id, newPerson);
     }
-
+    
     public void activatePerson(Long id) {
         Person person = this.findbyId(id);
         if (person.getStatus().equals(StatusPerson.ATIVO)) {

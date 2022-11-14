@@ -14,7 +14,15 @@ public enum Messages {
 
     PERSON_ALREADY_ACTIVE("Pessoa já está ativa."),
 
-    PERSON_ALREADY_INACTIVE ("Pessoa já está inativa.");
+    PERSON_ALREADY_INACTIVE ("Pessoa já está inativa."),
+
+    AUTHENTICATION_ERROR("Login e(ou) Senha incorreto(s)!"),
+
+    PERSON_INACTIVE_RECORD("Não é Possivel registrar para pessoa inativa"),
+
+    FOUR_RECORS("Esse dia já contém 4 registros");
+
+
     private String description;
     Messages(String description) {
         this.description = description;
