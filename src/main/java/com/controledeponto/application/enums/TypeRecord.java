@@ -1,8 +1,8 @@
 package com.controledeponto.application.enums;
 
 public enum TypeRecord {
-    ENTRY(0),
-    EXIT(1);
+    ENTRADA(0),
+    SAIDA(1);
 
     private int code;
     private TypeRecord(int code) {

@@ -24,7 +24,7 @@ Planejamento
 
 	Feito:
 		CRUD de person back e front
-		Adiantamento do registro de entrada e saida
+		Adiantamento do registro de entrada e saida (backend)
 		
 
 	Atrasado:
