@@ -24,7 +24,7 @@ public class PersonService extends GenericCrudService<Person, Long> {
 
     @Override
     public void initInsert(Person person) {
-        person.setStatus(StatusPerson.ACTIVE);
+        person.setStatus(StatusPerson.ATIVO);
     }
 
 
@@ -33,13 +33,21 @@ public class PersonService extends GenericCrudService<Person, Long> {
                 .flatMap(it -> it)
                 .orElseThrow(() -> new ServiceException(Messages.UNREGISTERED_PERSON.getDescription()));
     }
+    @Override
+    public void update(Long id, Person newPerson) {
+        if(newPerson.getPassword().isEmpty()) {
+            Person person = this.findbyId(newPerson.getId());
+            newPerson.setPassword(person.getPassword());
+        }
+        super.update(id, newPerson);
+    }
 
     public void activatePerson(Long id) {
         Person person = this.findbyId(id);
-        if (person.getStatus().equals(StatusPerson.ACTIVE)) {
+        if (person.getStatus().equals(StatusPerson.ATIVO)) {
             throw new ServiceException(Messages.PERSON_ALREADY_ACTIVE.getDescription());
         } else {
-            person.setStatus(StatusPerson.ACTIVE);
+            person.setStatus(StatusPerson.ATIVO);
             personRepository.save(person);
         }
 
@@ -47,10 +55,10 @@ public class PersonService extends GenericCrudService<Person, Long> {
 
     public void inactivatePerson(Long id) {
         Person person = this.findbyId(id);
-        if (person.getStatus().equals(StatusPerson.INACTIVE)) {
+        if (person.getStatus().equals(StatusPerson.INATIVO)) {
             throw new ServiceException(Messages.PERSON_ALREADY_INACTIVE.getDescription());
         } else {
-            person.setStatus(StatusPerson.INACTIVE);
+            person.setStatus(StatusPerson.INATIVO);
             personRepository.save(person);
         }
 
@@ -74,6 +82,7 @@ public class PersonService extends GenericCrudService<Person, Long> {
             throw new ServiceException(Messages.INVALID_ACESS.getDescription());
         }
     }
+
 
 
 }

@@ -1,6 +1,6 @@
 package com.controledeponto.application.mapper;
 
-import com.controledeponto.application.dto.PersonInsertDTO;
+import com.controledeponto.application.dto.PersonDTO;
 import com.controledeponto.application.dto.PersonFindDTO;
 import com.controledeponto.application.model.Person;
 import org.modelmapper.ModelMapper;
@@ -13,15 +13,15 @@ import java.util.stream.Collectors;
 public class PersonMapper{
     private static  final ModelMapper MODEL_MAPPER = new ModelMapper();
 
-    public PersonInsertDTO toPersonInsertDTO(Person person) {
-        return MODEL_MAPPER.map(person, PersonInsertDTO.class);
+    public PersonDTO toPersonInsertDTO(Person person) {
+        return MODEL_MAPPER.map(person, PersonDTO.class);
     }
 
     public PersonFindDTO toPersonFindDTO(Person person) {
         return MODEL_MAPPER.map(person, PersonFindDTO.class);
     }
-    public Person personInsertDTOToPerson(PersonInsertDTO personInsertDTO) {
-        return  MODEL_MAPPER.map(personInsertDTO, Person.class);
+    public Person personInsertDTOToPerson(PersonDTO personDTO) {
+        return  MODEL_MAPPER.map(personDTO, Person.class);
     }
 
     public List<PersonFindDTO> toPersonDTOList(List<Person> persons) {

@@ -20,7 +20,7 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        personRepository.save(new Person(null,"danieelsan1","Daniel","Santana","1234", AcessPerson.DENTIST, StatusPerson.ACTIVE));
+        personRepository.save(new Person(null,"danieelsan1","Daniel","Santana","1234", AcessPerson.DENTISTA, StatusPerson.ATIVO));
 
     }
 

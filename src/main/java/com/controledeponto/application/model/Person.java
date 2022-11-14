@@ -1,9 +1,11 @@
 package com.controledeponto.application.model;
 
+import com.controledeponto.application.anonation.Ignore;
 import com.controledeponto.application.anonation.ValidationFields;
 import com.controledeponto.application.anonation.NotUpperCase;
 import com.controledeponto.application.enums.AcessPerson;
 import com.controledeponto.application.enums.StatusPerson;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,7 @@ public class Person {
 
     @ValidationFields(notEmpty = true)
     @NotUpperCase
+    @JsonIgnore
     @Column(name = "senha_pessoa", nullable = false)
     private String password;
 

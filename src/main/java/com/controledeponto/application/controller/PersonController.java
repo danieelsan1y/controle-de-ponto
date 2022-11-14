@@ -2,7 +2,7 @@ package com.controledeponto.application.controller;
 
 import com.controledeponto.application.dto.PersonFindDTO;
 import com.controledeponto.application.model.Person;
-import com.controledeponto.application.dto.PersonInsertDTO;
+import com.controledeponto.application.dto.PersonDTO;
 import com.controledeponto.application.mapper.PersonMapper;
 import com.controledeponto.application.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class PersonController {
     PersonMapper personMapper;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
-    public ResponseEntity<PersonFindDTO> insert(@RequestBody PersonInsertDTO personInsertDTO) {
-        Person person = personMapper.personInsertDTOToPerson(personInsertDTO);
+    public ResponseEntity<PersonFindDTO> insert(@RequestBody PersonDTO personDTO) {
+        Person person = personMapper.personInsertDTOToPerson(personDTO);
         personService.insert(person);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -36,6 +36,7 @@ public class PersonController {
         return ResponseEntity.ok()
                 .body(personMapper.toPersonDTOList(personService.findAll()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<PersonFindDTO> findById(@PathVariable Long id) {
         return ResponseEntity
@@ -45,8 +46,8 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody PersonInsertDTO personInsertDTO) {
-        personService.update(id, personMapper.personInsertDTOToPerson(personInsertDTO));
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
+        personService.update(id, personMapper.personInsertDTOToPerson(personDTO));
         return ResponseEntity
                 .ok()
                 .build();
@@ -66,6 +67,7 @@ public class PersonController {
                 .ok()
                 .build();
     }
+
     @PutMapping("/status/activate/{id}")
     public ResponseEntity<Void> activatedPerson(@PathVariable Long id) {
         personService.activatePerson(id);
