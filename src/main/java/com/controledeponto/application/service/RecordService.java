@@ -50,14 +50,11 @@ public class RecordService extends GenericCrudService<Record, Long> {
 
     }
 
-    public Long register(RecordDTO recordDTO) {
+    public Long insert(RecordDTO recordDTO) {
         Person person = this.validateLogin(recordDTO);
         verifyStatus(person.getStatus());
 
-        Record record = new Record();
-        record.setType(this.returnTipe(person));
-        record.setInstantRecord(LocalDateTime.now());
-        record.setPerson(person);
+        Record record = new Record(null,this.returnTipe(person),LocalDateTime.now(),person);
         recordRepository.save(record);
         return record.getId();
     }
@@ -72,7 +69,6 @@ public class RecordService extends GenericCrudService<Record, Long> {
             throw new ServiceException(Messages.AUTHENTICATION_ERROR.getDescription());
         }
         return person;
-
     }
 
     public void verifyStatus(StatusPerson statusPerson) {
@@ -86,7 +82,8 @@ public class RecordService extends GenericCrudService<Record, Long> {
         LocalDateTime finalDate = LocalDateTime.of(date.getYear()
                 , date.getMonth()
                 , date.getDayOfMonth()
-                , 23, 59), initialDate = date.atStartOfDay();
+                , 23, 59)
+                , initialDate = date.atStartOfDay();
 
         List<Record> records = recordRepository
                 .findOneDay(initialDate, finalDate, person.getId());
@@ -102,7 +99,5 @@ public class RecordService extends GenericCrudService<Record, Long> {
         }
 
         return TypeRecord.ENTRADA;
-
-
     }
 }

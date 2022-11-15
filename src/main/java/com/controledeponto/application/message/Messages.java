@@ -18,9 +18,9 @@ public enum Messages {
 
     AUTHENTICATION_ERROR("Login e(ou) Senha incorreto(s)!"),
 
-    PERSON_INACTIVE_RECORD("Não é Possivel registrar para pessoa inativa"),
+    PERSON_INACTIVE_RECORD("Não é possivel registrar ponto para pessoa inativa."),
 
-    FOUR_RECORS("Esse dia já contém 4 registros");
+    FOUR_RECORS("Esse dia já contém 4 registros.");
 
 
     private String description;

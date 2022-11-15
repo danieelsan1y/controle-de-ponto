@@ -21,7 +21,7 @@ public class RecordController {
     public ResponseEntity<RecordReturnDTO> insert(@RequestBody RecordDTO recordDTO) {
         return ResponseEntity
                 .ok()
-                .body(new RecordReturnDTO(recordService.register(recordDTO)));
+                .body(new RecordReturnDTO(recordService.insert(recordDTO)));
 
     }
 }

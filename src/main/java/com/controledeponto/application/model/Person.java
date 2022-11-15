@@ -17,7 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Setter
 @Entity
-@Table(name = "tb_cliente")
+@Table(name = "tb_pessoa")
 public class Person {
 
     @Id
