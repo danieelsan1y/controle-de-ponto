@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/record")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RecordController {
 
 
@@ -17,11 +18,10 @@ public class RecordController {
 
 
     @PostMapping
-    public ResponseEntity<RecordReturnDTO> insert (@RequestBody RecordDTO recordDTO) {
-        RecordReturnDTO recordReturnDTO = new RecordReturnDTO( recordService.register(recordDTO));
+    public ResponseEntity<RecordReturnDTO> insert(@RequestBody RecordDTO recordDTO) {
         return ResponseEntity
                 .ok()
-                .body(recordReturnDTO);
+                .body(new RecordReturnDTO(recordService.register(recordDTO)));
 
     }
 }

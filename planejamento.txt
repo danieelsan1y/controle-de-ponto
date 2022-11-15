@@ -7,7 +7,7 @@ Planejamento
 
 	Feito:
 		Modelagem do banco, criar o projeto do backend
-		Adiantamento no crud de Person
+		Adiantamento no crud de Person (backend)
 		Adiantamento da reflexão usando um Crud generico
 		
 
@@ -23,8 +23,10 @@ Planejamento
 		
 
 	Feito:
+		Criação do Projeto no front
 		CRUD de person back e front
 		Adiantamento do registro de entrada e saida (backend)
+                Adiantamento do registro de entrada e saida (frontend)
 		
 
 	Atrasado:
