@@ -14,10 +14,11 @@ import java.util.List;
 public interface RecordRepository extends JpaRepository<Record, Long> {
 
     @Query("select r from Record r " +
-            "where r.instantRecord between :initialDate " +
+            "where r.instantRecord " +
+            "between :initialDate " +
             "and :finalDate " +
             "and r.person.id = :idPerson")
-    public List<Record> findOneDay (@Param("initialDate") LocalDateTime initialDate,
-                                    @Param("finalDate") LocalDateTime finalDate,
-                                    @Param("idPerson") Long idPerson);
+    public List<Record> findOneDay(@Param("initialDate") LocalDateTime initialDate,
+                                   @Param("finalDate") LocalDateTime finalDate,
+                                   @Param("idPerson") Long idPerson);
 }

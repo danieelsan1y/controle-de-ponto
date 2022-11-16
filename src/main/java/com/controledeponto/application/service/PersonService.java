@@ -33,6 +33,7 @@ public class PersonService extends GenericCrudService<Person, Long> {
                 .flatMap(it -> it)
                 .orElseThrow(() -> new ServiceException(Messages.UNREGISTERED_PERSON.getDescription()));
     }
+
     @Override
     public void update(Long id, Person newPerson) {
         if(newPerson.getPassword().isEmpty()) {
@@ -50,7 +51,6 @@ public class PersonService extends GenericCrudService<Person, Long> {
             person.setStatus(StatusPerson.ATIVO);
             personRepository.save(person);
         }
-
     }
 
     public void inactivatePerson(Long id) {

@@ -2,6 +2,7 @@ package com.controledeponto.application.enums;
 
 public enum TypeRecord {
     ENTRADA(0),
+
     SAIDA(1);
 
     private int code;

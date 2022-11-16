@@ -3,7 +3,9 @@ package com.controledeponto.application.message;
 public enum Messages {
 
     UNEXPECTED_ERROR("Ocorreu um erro inesperado."),
+
     REQUIRED_FIELDS("Campo(s) obrigatórios em branco!"),
+
     EXISTING_LOGIN ("Login já cadastrado, por favor informar outro!"),
 
     UNREGISTERED_PERSON ("Pessoa não cadastrada!"),

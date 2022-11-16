@@ -2,6 +2,7 @@ package com.controledeponto.application.enums;
 
 public enum StatusPerson {
     ATIVO(0),
+
     INATIVO(1);
 
     private int code;

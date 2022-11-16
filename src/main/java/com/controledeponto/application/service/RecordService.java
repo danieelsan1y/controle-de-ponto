@@ -31,31 +31,31 @@ public class RecordService extends GenericCrudService<Record, Long> {
 
     @Override
     public JpaRepository<Record, Long> getRepository() {
-        return null;
+        return this.recordRepository;
     }
 
     @Override
     public void initInsert(Record record) {
-
-
     }
 
     @Override
     public void verifyUniqueElement(Record record) {
-
     }
 
     @Override
     public void validateEnums(Record record) {
-
     }
 
     public Long insert(RecordDTO recordDTO) {
         Person person = this.validateLogin(recordDTO);
         verifyStatus(person.getStatus());
 
-        Record record = new Record(null,this.returnTipe(person),LocalDateTime.now(),person);
-        recordRepository.save(record);
+        Record record = super.insert(new Record(
+                     null,
+                        this.returnTipe(person),
+                        LocalDateTime.now(),
+                        person));
+
         return record.getId();
     }
 
@@ -79,11 +79,12 @@ public class RecordService extends GenericCrudService<Record, Long> {
 
     public TypeRecord returnTipe(Person person) {
         LocalDate date = LocalDate.now();
-        LocalDateTime finalDate = LocalDateTime.of(date.getYear()
-                , date.getMonth()
-                , date.getDayOfMonth()
-                , 23, 59)
-                , initialDate = date.atStartOfDay();
+        LocalDateTime finalDate = LocalDateTime.of(date.getYear(),
+                date.getMonth(),
+                date.getDayOfMonth(),
+                23,
+                59),
+                initialDate = date.atStartOfDay();
 
         List<Record> records = recordRepository
                 .findOneDay(initialDate, finalDate, person.getId());

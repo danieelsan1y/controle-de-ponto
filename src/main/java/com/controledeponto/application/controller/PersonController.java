@@ -21,6 +21,7 @@ public class PersonController {
 
     @Autowired
     PersonMapper personMapper;
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
     public ResponseEntity<PersonFindDTO> insert(@RequestBody PersonDTO personDTO) {

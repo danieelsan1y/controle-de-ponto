@@ -25,7 +25,7 @@ public class PersonMapper{
     }
 
     public List<PersonFindDTO> toPersonDTOList(List<Person> persons) {
-        List<PersonFindDTO> personFindDTOS = persons.stream().map(person -> toPersonFindDTO(person)).collect(Collectors.toList());
+        List<PersonFindDTO> personFindDTOS = persons.stream().map(this::toPersonFindDTO).collect(Collectors.toList());
         return personFindDTOS;
     }
 
