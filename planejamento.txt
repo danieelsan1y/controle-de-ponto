@@ -30,4 +30,19 @@ Planejamento
 		
 
 	Atrasado:
-		-				
+
+3ª Sprint -> 
+	Esperado:
+		Entrada e Saida
+		
+
+	Feito:
+		Ajustes entrada e saida
+		Listagem de faltas
+
+		
+
+	Atrasado:
+		-
+		
+		
