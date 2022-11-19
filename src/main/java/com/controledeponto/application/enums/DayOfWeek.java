@@ -68,7 +68,7 @@ public enum DayOfWeek {
                 return "Sábado";
             }
 
-        throw new IllegalArgumentException("Invalid Order Status code!");
+        throw new IllegalArgumentException("Invalid Order Status text!");
     }
 
 }

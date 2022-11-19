@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class RecordService extends GenericCrudService<Record, Long> {
@@ -107,14 +106,13 @@ public class RecordService extends GenericCrudService<Record, Long> {
         return TypeRecord.ENTRADA;
     }
 
-    public List<RecordFaultsDTO> listOflack(LocalDate fristPeriod, LocalDate secondPeriod, Long id) {
+    public List<RecordFaultsDTO> listOflack(LocalDate fristPeriod, LocalDate secondPeriod, String login) {
         LocalDateTime initialDate = returnLocalDateTime(fristPeriod, 00, 00);
         LocalDateTime finalDate = returnLocalDateTime(secondPeriod, 23, 59);
 
-        Optional<Person> person = personRepository.findById(id);
-        vefifiPeriodPerson(person);
+        Person person = verifyPersonByLogin(login);
 
-        List<Record> records = recordRepository.findPeriod(initialDate, finalDate, person.get().getId());
+        List<Record> records = recordRepository.findPeriod(initialDate, finalDate, person.getId());
         verifyPeriod(records);
 
 
@@ -179,10 +177,10 @@ public class RecordService extends GenericCrudService<Record, Long> {
         }
     }
 
-    private void vefifiPeriodPerson(Optional<Person> person) {
-        if (!person.isPresent()) {
-            throw new ServiceException(Messages.UNREGISTERED_PERSON.getDescription());
-        }
+    private Person verifyPersonByLogin(String login) {
+        return Optional.ofNullable(personRepository.findByLogin(login))
+                .flatMap(it -> it)
+                .orElseThrow(() -> new ServiceException(Messages.UNREGISTERED_PERSON.getDescription()));
     }
 
 }

@@ -31,7 +31,7 @@ public class RecordController {
     @GetMapping(value = "/lacks")
     public ResponseEntity<List<RecordFaultsDTO>> listOflack(@RequestParam(name = "fristPeriod") LocalDate fristPeriod,
                                                             @RequestParam(name = "secondPeriod") LocalDate secondPeriod,
-                                                            @RequestParam(name = "id") Long id) {
-        return ResponseEntity.ok().body(recordService.listOflack(fristPeriod, secondPeriod, id));
+                                                            @RequestParam(name = "login") String login) {
+        return ResponseEntity.ok().body(recordService.listOflack(fristPeriod, secondPeriod, login));
     }
 }
