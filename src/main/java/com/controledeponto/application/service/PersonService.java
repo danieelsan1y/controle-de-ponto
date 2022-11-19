@@ -36,13 +36,13 @@ public class PersonService extends GenericCrudService<Person, Long> {
 
     @Override
     public void update(Long id, Person newPerson) {
-        if(newPerson.getPassword().isEmpty()) {
+        if (newPerson.getPassword().isEmpty()) {
             Person person = this.findbyId(newPerson.getId());
             newPerson.setPassword(person.getPassword());
         }
         super.update(id, newPerson);
     }
-    
+
     public void activatePerson(Long id) {
         Person person = this.findbyId(id);
         if (person.getStatus().equals(StatusPerson.ATIVO)) {
@@ -82,7 +82,6 @@ public class PersonService extends GenericCrudService<Person, Long> {
             throw new ServiceException(Messages.INVALID_ACESS.getDescription());
         }
     }
-
 
 
 }

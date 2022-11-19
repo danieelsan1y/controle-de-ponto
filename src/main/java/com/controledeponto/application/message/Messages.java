@@ -22,7 +22,9 @@ public enum Messages {
 
     PERSON_INACTIVE_RECORD("Não é possivel registrar ponto para pessoa inativa."),
 
-    FOUR_RECORS("Esse dia já contém 4 registros.");
+    FOUR_RECORS("Esse dia já contém 4 registros."),
+
+    EMPTY_PERIOD("Não existe data(s) para o período informado.");
 
 
     private String description;

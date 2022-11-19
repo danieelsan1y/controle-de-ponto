@@ -1,6 +1,8 @@
 package com.controledeponto.application.service;
 
 import com.controledeponto.application.dto.RecordDTO;
+import com.controledeponto.application.dto.RecordFaultsDTO;
+import com.controledeponto.application.enums.DayOfWeek;
 import com.controledeponto.application.enums.StatusPerson;
 import com.controledeponto.application.enums.TypeRecord;
 import com.controledeponto.application.exceptions.service.ServiceException;
@@ -16,13 +18,16 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class RecordService extends GenericCrudService<Record, Long> {
 
     DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+    DateTimeFormatter sdf2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @Autowired
     private RecordRepository recordRepository;
 
@@ -51,10 +56,10 @@ public class RecordService extends GenericCrudService<Record, Long> {
         verifyStatus(person.getStatus());
 
         Record record = super.insert(new Record(
-                     null,
-                        this.returnTipe(person),
-                        LocalDateTime.now(),
-                        person));
+                null,
+                this.returnTipe(person),
+                LocalDateTime.now(),
+                person));
 
         return record.getId();
     }
@@ -87,7 +92,7 @@ public class RecordService extends GenericCrudService<Record, Long> {
                 initialDate = date.atStartOfDay();
 
         List<Record> records = recordRepository
-                .findOneDay(initialDate, finalDate, person.getId());
+                .findPeriod(initialDate, finalDate, person.getId());
 
         if (records.size() >= 4) {
             throw new ServiceException(Messages.FOUR_RECORS.getDescription());
@@ -101,4 +106,83 @@ public class RecordService extends GenericCrudService<Record, Long> {
 
         return TypeRecord.ENTRADA;
     }
+
+    public List<RecordFaultsDTO> listOflack(LocalDate fristPeriod, LocalDate secondPeriod, Long id) {
+        LocalDateTime initialDate = returnLocalDateTime(fristPeriod, 00, 00);
+        LocalDateTime finalDate = returnLocalDateTime(secondPeriod, 23, 59);
+
+        Optional<Person> person = personRepository.findById(id);
+        vefifiPeriodPerson(person);
+
+        List<Record> records = recordRepository.findPeriod(initialDate, finalDate, person.get().getId());
+        verifyPeriod(records);
+
+
+        return getFaults(fristPeriod, secondPeriod, records);
+
+    }
+
+    private LocalDateTime returnLocalDateTime(LocalDate localDate, Integer hour, Integer minute) {
+        return LocalDateTime.of(localDate.getYear(),
+                localDate.getMonth(),
+                localDate.getDayOfMonth(),
+                hour,
+                minute);
+    }
+
+    private List<RecordFaultsDTO> getFaults(LocalDate fristPeriod, LocalDate secondPeriod, List<Record> records) {
+        List<String> workingDays = workingDays(fristPeriod, secondPeriod);
+        Set<String> workedDays = workedDays(records);
+        Map<String, String> faultes = new HashMap<>();
+
+        workingDays.stream().forEach(it -> {
+            if (!workedDays.contains(it)) {
+                LocalDate localDate = LocalDate.parse(it, sdf2);
+                faultes.put(it, localDate.getDayOfWeek().toString());
+            }
+        });
+        System.out.println(faultes.keySet());
+        return faultes.entrySet()
+                .stream().
+                map(it -> new RecordFaultsDTO(it.getKey(),
+                        DayOfWeek.dayForWeekBrazil(it.getValue()))).collect(Collectors.toList());
+    }
+
+    private List<String> workingDays(LocalDate fristPeriod, LocalDate secondPeriod) {
+        List<String> periodDays = new ArrayList<>();
+        LocalDate dateAux = fristPeriod;
+
+        while (dateAux.compareTo(secondPeriod) <= 0) {
+            if (!DayOfWeek.returnCode(String.valueOf(dateAux.getDayOfWeek())).equals(0)
+                    && !DayOfWeek.returnCode(String.valueOf(dateAux.getDayOfWeek())).equals(6)) {
+                periodDays.add(sdf2.format(dateAux));
+            }
+            dateAux = dateAux.plusDays(1);
+        }
+        return periodDays;
+    }
+
+    private Set<String> workedDays(List<Record> records) {
+        Set<String> datesWorking = new LinkedHashSet<>();
+        records.stream().forEach(it -> {
+            String dateString = it.getInstantRecord().getDayOfMonth()
+                    + "/" + it.getInstantRecord().getMonth().getValue()
+                    + "/" + it.getInstantRecord().getYear();
+            datesWorking.add(dateString);
+        });
+        return datesWorking;
+    }
+
+    private void verifyPeriod(List<Record> dates) {
+        if (dates.isEmpty()) {
+            throw new ServiceException(Messages.EMPTY_PERIOD.getDescription());
+        }
+    }
+
+    private void vefifiPeriodPerson(Optional<Person> person) {
+        if (!person.isPresent()) {
+            throw new ServiceException(Messages.UNREGISTERED_PERSON.getDescription());
+        }
+    }
+
 }
