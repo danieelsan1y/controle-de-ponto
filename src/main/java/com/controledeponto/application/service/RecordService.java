@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +29,7 @@ public class RecordService extends GenericCrudService<Record, Long> {
     DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     DateTimeFormatter sdf2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     @Autowired
     private RecordRepository recordRepository;
 
@@ -139,11 +142,19 @@ public class RecordService extends GenericCrudService<Record, Long> {
                 faultes.put(it, localDate.getDayOfWeek().toString());
             }
         });
-        System.out.println(faultes.keySet());
+
         return faultes.entrySet()
-                .stream().
-                map(it -> new RecordFaultsDTO(it.getKey(),
-                        DayOfWeek.dayForWeekBrazil(it.getValue()))).collect(Collectors.toList());
+                .stream()
+                .map(it -> new RecordFaultsDTO
+                        (
+                                it.getKey(),
+                                DayOfWeek.dayForWeekBrazil(it.getValue())
+                        )
+                )
+                .sorted
+                        (Comparator.comparing(RecordFaultsDTO::getDay))
+                .toList();
+
     }
 
     private List<String> workingDays(LocalDate fristPeriod, LocalDate secondPeriod) {

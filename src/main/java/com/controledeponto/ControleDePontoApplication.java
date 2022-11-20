@@ -12,12 +12,5 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 public class ControleDePontoApplication {
 
-    public static void main(String[] args) {
-
-        SpringApplication.run(ControleDePontoApplication.class, args);
-
-    }
-
-
-
+    public static void main(String[] args) {SpringApplication.run(ControleDePontoApplication.class, args);}
 }

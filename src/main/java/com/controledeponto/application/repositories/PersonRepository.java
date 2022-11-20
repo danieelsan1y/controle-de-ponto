@@ -16,5 +16,9 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     @Query
     Optional<Person> findByLogin(String login);
 
+    @Query("select p from Person p " +
+            "order by p.id")
+    List<Person> findAll();
+
 
 }
