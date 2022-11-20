@@ -1,7 +1,6 @@
 package com.controledeponto.application.controller;
 
 import com.controledeponto.application.dto.PersonFindDTO;
-import com.controledeponto.application.model.Person;
 import com.controledeponto.application.dto.PersonDTO;
 import com.controledeponto.application.mapper.PersonMapper;
 import com.controledeponto.application.service.PersonService;
@@ -25,17 +24,20 @@ public class PersonController {
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping
     public ResponseEntity<PersonFindDTO> insert(@RequestBody PersonDTO personDTO) {
-        Person person = personMapper.personInsertDTOToPerson(personDTO);
-        personService.insert(person);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(personMapper.toPersonFindDTO(person));
+                .body(personMapper
+                        .toPersonFindDTO(personService
+                                .insert(personMapper
+                                        .personInsertDTOToPerson(personDTO))));
     }
 
     @GetMapping
     public ResponseEntity<List<PersonFindDTO>> findAll() {
         return ResponseEntity.ok()
-                .body(personMapper.toPersonDTOList(personService.findAll()));
+                .body(personMapper
+                        .toPersonDTOList(personService
+                                .findAll()));
     }
 
     @GetMapping("/{id}")
@@ -43,7 +45,8 @@ public class PersonController {
         return ResponseEntity
                 .ok()
                 .body(personMapper
-                        .toPersonFindDTO(personService.findbyId(id)));
+                        .toPersonFindDTO(personService
+                                .findbyId(id)));
     }
 
     @PutMapping("/{id}")
@@ -58,7 +61,9 @@ public class PersonController {
     public ResponseEntity<PersonFindDTO> findByLogin(@PathVariable String login) {
         return ResponseEntity
                 .ok()
-                .body(personMapper.toPersonFindDTO(personService.findByLogin(login)));
+                .body(personMapper
+                        .toPersonFindDTO(personService
+                                .findByLogin(login)));
     }
 
     @PutMapping("/status/inactivate/{id}")

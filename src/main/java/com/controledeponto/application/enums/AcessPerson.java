@@ -1,6 +1,7 @@
 package com.controledeponto.application.enums;
 
 public enum AcessPerson {
+
     DENTISTA(0),
 
     FUNCIONARIO(1);

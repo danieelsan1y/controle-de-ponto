@@ -14,6 +14,7 @@ import com.controledeponto.application.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,7 +62,6 @@ public class RecordService extends GenericCrudService<Record, Long> {
     }
 
     public Person validateLogin(RecordDTO personLoginDTO) {
-
         Person person = Optional.ofNullable(personRepository.findByLogin(personLoginDTO.getLogin()))
                 .flatMap(it -> it)
                 .orElseThrow(() -> new ServiceException(Messages.AUTHENTICATION_ERROR.getDescription()));
@@ -80,15 +80,17 @@ public class RecordService extends GenericCrudService<Record, Long> {
 
     public TypeRecord returnTipe(Person person) {
         LocalDate date = LocalDate.now();
-        LocalDateTime finalDate = LocalDateTime.of(date.getYear(),
-                date.getMonth(),
-                date.getDayOfMonth(),
-                23,
-                59),
+        LocalDateTime finalDate = LocalDateTime.of
+                (
+                        date.getYear(),
+                        date.getMonth(),
+                        date.getDayOfMonth(),
+                        23,
+                        59
+                ),
                 initialDate = date.atStartOfDay();
 
-        List<Record> records = recordRepository
-                .findPeriod(initialDate, finalDate, person.getId());
+        List<Record> records = recordRepository.findPeriod(initialDate, finalDate, person.getId());
 
         if (records.size() >= 4) {
             throw new ServiceException(Messages.FOUR_RECORS.getDescription());
@@ -104,22 +106,24 @@ public class RecordService extends GenericCrudService<Record, Long> {
     }
 
     public List<RecordFaultsDTO> listOflack(LocalDate fristPeriod, LocalDate secondPeriod, String login) {
-        final LocalDateTime initialDate = returnLocalDateTime(fristPeriod, 00, 00);
-        final LocalDateTime finalDate = returnLocalDateTime(secondPeriod, 23, 59);
+        LocalDateTime initialDate = returnLocalDateTime(fristPeriod, 00, 00);
+        LocalDateTime finalDate = returnLocalDateTime(secondPeriod, 23, 59);
 
-        final Person person = verifyPersonByLogin(login);
-
-        final List<Record> records = verifyPeriod(initialDate, finalDate, person.getId());
+        Person person = verifyPersonByLogin(login);
+        List<Record> records = verifyPeriod(initialDate, finalDate, person.getId());
 
         return getFaults(fristPeriod, secondPeriod, records);
     }
 
     private LocalDateTime returnLocalDateTime(LocalDate localDate, Integer hour, Integer minute) {
-        return LocalDateTime.of(localDate.getYear(),
-                localDate.getMonth(),
-                localDate.getDayOfMonth(),
-                hour,
-                minute);
+        return LocalDateTime.of
+                (
+                        localDate.getYear(),
+                        localDate.getMonth(),
+                        localDate.getDayOfMonth(),
+                        hour,
+                        minute
+                );
     }
 
     private List<RecordFaultsDTO> getFaults(LocalDate fristPeriod, LocalDate secondPeriod, List<Record> records) {
@@ -135,7 +139,6 @@ public class RecordService extends GenericCrudService<Record, Long> {
         });
 
         return convertToRecordFaultsDTO(faultes);
-
     }
 
 
@@ -156,7 +159,7 @@ public class RecordService extends GenericCrudService<Record, Long> {
 
     private Set<String> workedDays(List<Record> records) {
         Set<String> datesWorking = new LinkedHashSet<>();
-        records.stream().forEach(it -> {
+        records.forEach(it -> {
             String dateString = it.getInstantRecord().getDayOfMonth()
                     + "/" + it.getInstantRecord().getMonth().getValue()
                     + "/" + it.getInstantRecord().getYear();
@@ -179,8 +182,10 @@ public class RecordService extends GenericCrudService<Record, Long> {
                         (Comparator.comparing(RecordFaultsDTO::getDay))
                 .toList();
     }
-    private List<Record> verifyPeriod(LocalDateTime initialDate, LocalDateTime finalDate,Long idPerson) {
-        List<Record> records = recordRepository.findPeriod(initialDate, finalDate,idPerson);
+
+    private List<Record> verifyPeriod(LocalDateTime initialDate, LocalDateTime finalDate, Long idPerson) {
+        List<Record> records = recordRepository.findPeriod(initialDate, finalDate, idPerson);
+
         if (records.isEmpty()) {
             throw new ServiceException(Messages.EMPTY_PERIOD.getDescription());
         } else {

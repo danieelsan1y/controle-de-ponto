@@ -1,6 +1,7 @@
 package com.controledeponto.application.exceptions.service;
 
 public class SeviceErro {
+
     private String status;
     private String message;
 

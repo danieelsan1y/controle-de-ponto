@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public abstract class GenericCrudService<EntityName, TypePk> extends Validation<EntityName> {
 
-
     public abstract JpaRepository<EntityName, TypePk> getRepository();
 
     public abstract void initInsert(EntityName entityName);

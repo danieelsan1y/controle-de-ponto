@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class PersonMapper{
+
     private static  final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public PersonDTO toPersonInsertDTO(Person person) {

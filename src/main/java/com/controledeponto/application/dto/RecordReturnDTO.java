@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class RecordReturnDTO {
-    private Long numeroRegistro;
+
+    private Long numberRecord;
 }
