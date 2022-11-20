@@ -14,22 +14,16 @@ import com.controledeponto.application.repositories.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class RecordService extends GenericCrudService<Record, Long> {
+    DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    DateTimeFormatter sdf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-    DateTimeFormatter sdf2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     @Autowired
     private RecordRepository recordRepository;
 
@@ -110,17 +104,14 @@ public class RecordService extends GenericCrudService<Record, Long> {
     }
 
     public List<RecordFaultsDTO> listOflack(LocalDate fristPeriod, LocalDate secondPeriod, String login) {
-        LocalDateTime initialDate = returnLocalDateTime(fristPeriod, 00, 00);
-        LocalDateTime finalDate = returnLocalDateTime(secondPeriod, 23, 59);
+        final LocalDateTime initialDate = returnLocalDateTime(fristPeriod, 00, 00);
+        final LocalDateTime finalDate = returnLocalDateTime(secondPeriod, 23, 59);
 
-        Person person = verifyPersonByLogin(login);
+        final Person person = verifyPersonByLogin(login);
 
-        List<Record> records = recordRepository.findPeriod(initialDate, finalDate, person.getId());
-        verifyPeriod(records);
-
+        final List<Record> records = verifyPeriod(initialDate, finalDate, person.getId());
 
         return getFaults(fristPeriod, secondPeriod, records);
-
     }
 
     private LocalDateTime returnLocalDateTime(LocalDate localDate, Integer hour, Integer minute) {
@@ -138,24 +129,15 @@ public class RecordService extends GenericCrudService<Record, Long> {
 
         workingDays.stream().forEach(it -> {
             if (!workedDays.contains(it)) {
-                LocalDate localDate = LocalDate.parse(it, sdf2);
+                LocalDate localDate = LocalDate.parse(it, formatDate);
                 faultes.put(it, localDate.getDayOfWeek().toString());
             }
         });
 
-        return faultes.entrySet()
-                .stream()
-                .map(it -> new RecordFaultsDTO
-                        (
-                                it.getKey(),
-                                DayOfWeek.dayForWeekBrazil(it.getValue())
-                        )
-                )
-                .sorted
-                        (Comparator.comparing(RecordFaultsDTO::getDay))
-                .toList();
+        return convertToRecordFaultsDTO(faultes);
 
     }
+
 
     private List<String> workingDays(LocalDate fristPeriod, LocalDate secondPeriod) {
         List<String> periodDays = new ArrayList<>();
@@ -164,10 +146,11 @@ public class RecordService extends GenericCrudService<Record, Long> {
         while (dateAux.compareTo(secondPeriod) <= 0) {
             if (!DayOfWeek.returnCode(String.valueOf(dateAux.getDayOfWeek())).equals(0)
                     && !DayOfWeek.returnCode(String.valueOf(dateAux.getDayOfWeek())).equals(6)) {
-                periodDays.add(sdf2.format(dateAux));
+                periodDays.add(formatDate.format(dateAux));
             }
             dateAux = dateAux.plusDays(1);
         }
+
         return periodDays;
     }
 
@@ -179,12 +162,29 @@ public class RecordService extends GenericCrudService<Record, Long> {
                     + "/" + it.getInstantRecord().getYear();
             datesWorking.add(dateString);
         });
+
         return datesWorking;
     }
 
-    private void verifyPeriod(List<Record> dates) {
-        if (dates.isEmpty()) {
+    private static List<RecordFaultsDTO> convertToRecordFaultsDTO(Map<String, String> faultes) {
+        return faultes.entrySet()
+                .stream()
+                .map(it -> new RecordFaultsDTO
+                        (
+                                it.getKey(),
+                                DayOfWeek.dayForWeekBrazil(it.getValue())
+                        )
+                )
+                .sorted
+                        (Comparator.comparing(RecordFaultsDTO::getDay))
+                .toList();
+    }
+    private List<Record> verifyPeriod(LocalDateTime initialDate, LocalDateTime finalDate,Long idPerson) {
+        List<Record> records = recordRepository.findPeriod(initialDate, finalDate,idPerson);
+        if (records.isEmpty()) {
             throw new ServiceException(Messages.EMPTY_PERIOD.getDescription());
+        } else {
+            return records;
         }
     }
 
