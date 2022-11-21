@@ -40,6 +40,15 @@ public class PersonService extends GenericCrudService<Person, Long> {
             Person person = this.findbyId(newPerson.getId());
             newPerson.setPassword(person.getPassword());
         }
+        Optional<Person> presentLogin = personRepository.findByLogin(newPerson.getLogin());
+        Optional<Person> personOld = personRepository.findById(id);
+
+        personOld.ifPresent(person -> {
+            if (presentLogin.isPresent() && !personOld.get().getLogin().equals(newPerson.getLogin())) {
+                throw new ServiceException(Messages.EXISTING_LOGIN.getDescription());
+            }
+        });
+
         super.update(id, newPerson);
     }
 
