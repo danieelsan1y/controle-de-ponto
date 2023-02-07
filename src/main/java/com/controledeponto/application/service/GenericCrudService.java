@@ -18,10 +18,10 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
     public abstract void initInsert(EntityName entityName);
 
     public EntityName insert(EntityName entityName) {
+        this.initInsert(entityName);
         this.verifyNullFiled(entityName);
         this.verifyUniqueElement(entityName);
         this.toUppercase(entityName);
-        this.initInsert(entityName);
         this.validateEnums(entityName);
         return getRepository().save(entityName);
     }
@@ -31,7 +31,7 @@ public abstract class GenericCrudService<EntityName, TypePk> extends Validation<
     }
 
     public EntityName findbyId(TypePk typePk) {
-        return Optional.ofNullable(getRepository().findById(typePk))
+        return Optional.of(getRepository().findById(typePk))
                 .flatMap(it -> it)
                 .orElseThrow(() -> new ServiceException(Messages.UNREGISTERED_PERSON.getDescription()));
     }

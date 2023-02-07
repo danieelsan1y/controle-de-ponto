@@ -36,9 +36,10 @@ public class PersonService extends GenericCrudService<Person, Long> {
 
     @Override
     public void update(Long id, Person newPerson) {
-        Person personOld = this.findbyId(newPerson.getId());
+        Person personOld = this.findbyId(id);
+        newPerson.setStatus(personOld.getStatus());
 
-        if (newPerson.getPassword().isEmpty()) {
+        if (newPerson.getPassword() == null || newPerson.getPassword().isEmpty()) {
             newPerson.setPassword(personOld.getPassword());
         }
 
